@@ -11,7 +11,9 @@
     <string name="choisirDsDossier">Choisir une image dans un dossier</string>
     <string name="prendrePhoto">Prendre une photo</string>
     <string name="choixDaltonisme">Type de daltonisme:</string>
+    <string name="daltonizer">Daltonizer</string>
     <string-array name="dropdownTypeDeDaltonisme">
+        <item name="pasDeDaltonisme">Pas de daltonisme</item>
         <item name="deuteranomalie">Deutéranomalie</item>
         <item name="deuteranopie">Deutéranopie</item>
         <item name="protanomalie">Protanomalie</item>
@@ -20,5 +22,7 @@
         <item name="trianopie">Trianopie</item>
         <item name="achromatopsie">Achromatopsie</item>
     </string-array>
-    <string name="daltonizer">Daltonizer</string>
+    <string name="suivant">Suivant</string>
+    <string name="contentDescriptionHUE">HUE</string>
+    <string name="imageChoisie">Image choisie par l\'utilisateur</string>
 </resources>
