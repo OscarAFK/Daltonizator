@@ -12,6 +12,9 @@
     <string name="prendrePhoto">Prendre une photo</string>
     <string name="choixDaltonisme">Type de daltonisme:</string>
     <string name="daltonizer">Daltonizer</string>
+    <string name="suivant">Suivant</string>
+    <string name="contentDescriptionHUE">HUE</string>
+    <string name="imageChoisie">Image choisie par l\'utilisateur</string>
     <string-array name="dropdownTypeDeDaltonisme">
         <item name="pasDeDaltonisme">Pas de daltonisme</item>
         <item name="deuteranomalie">Deutéranomalie</item>
@@ -21,8 +24,10 @@
         <item name="trianomalie">Trianomalie</item>
         <item name="trianopie">Trianopie</item>
         <item name="achromatopsie">Achromatopsie</item>
+        <item name="achromatomalie">Achromatomalie</item>
     </string-array>
-    <string name="suivant">Suivant</string>
-    <string name="contentDescriptionHUE">HUE</string>
-    <string name="imageChoisie">Image choisie par l\'utilisateur</string>
+    <string name="originale">Version originale:</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="partager">Partager</string>
+    <string name="versionDalt">Version daltonizée:</string>
 </resources>
