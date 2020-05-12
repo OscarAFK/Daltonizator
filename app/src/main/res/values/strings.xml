@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Daltonizator</string>
+    <string name="buttonDaltonizer">Daltonizer une image</string>
+    <string name="buttonApropos">A propos</string>
+    <string name="buttonQuitter">Quitter</string>
+    <string name="contentDescriptionImagePresentation">Image de présentation</string>
+    <string name="textAPropos">Je met du texte ici histoire de montrer qu\'on a prévus le coup mais il faudrait le changer. Je pensais mettre des sources, du copyright, nos noms et ptetre un petit tutoriel sur comment faire fonctionner l\'app.</string>
+    <string name="buttonRetour">Retour</string>
+    <string name="instructions">Instructions:\n\t-1: Choisissez une image, ou prenez une photo\n\t-2: Choisissez le type de daltonisme\n\t-3:Appuyez sur le bouton Daltonizer pour voir le résultat</string>
+    <string name="image">Image:</string>
+    <string name="choisirDsDossier">Choisir une image dans un dossier</string>
+    <string name="prendrePhoto">Prendre une photo</string>
+    <string name="choixDaltonisme">Type de daltonisme:</string>
+    <string-array name="dropdownTypeDeDaltonisme">
+        <item name="deuteranomalie">Deutéranomalie</item>
+        <item name="deuteranopie">Deutéranopie</item>
+        <item name="protanomalie">Protanomalie</item>
+        <item name="protanopie">Protanopie</item>
+        <item name="trianomalie">Trianomalie</item>
+        <item name="trianopie">Trianopie</item>
+        <item name="achromatopsie">Achromatopsie</item>
+    </string-array>
+    <string name="daltonizer">Daltonizer</string>
+</resources>
