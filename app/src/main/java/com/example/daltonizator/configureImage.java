@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -61,15 +63,6 @@ public class configureImage extends AppCompatActivity {
     }
 
     public void openGallery(View view){
-
-       /* if (ContextCompat.checkSelfPermission(configureImage.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(configureImage.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    0);
-
-        }*/
-
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery,PICK_IMAGE);
     }
@@ -125,8 +118,14 @@ public class configureImage extends AppCompatActivity {
             imageView.setImageBitmap(image);
             buttonSuivant.setAlpha(1f);
             buttonSuivant.setClickable(true);
-
-            imageUri = Uri.parse(photoPath);
+            imageUri = getImageUri(getApplicationContext(), image);
         }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }

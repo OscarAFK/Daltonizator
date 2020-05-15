@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -56,12 +57,13 @@ public class daltonizedResult extends AppCompatActivity {
         result = findViewById(R.id.imageDalt);
         ImageView originale = findViewById(R.id.imageOriginale);
         originale.setImageURI(imageUri);
-
+        Log.v("test",imageUri.toString());
         try {
             convertImage(imageUri,typeDeDaltonisme);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.v("test","2");
     }
 
     public void closeActivity(View view){
@@ -148,6 +150,7 @@ public class daltonizedResult extends AppCompatActivity {
         Bitmap sourceBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
 
+        Log.v("test","1");
         float[] colorTransform = colorTransform(typeDeDaltonisme);
 
 
@@ -218,14 +221,13 @@ public class daltonizedResult extends AppCompatActivity {
     }
 
     public void share(View view){
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), resultBitmap,"title", null);
-        Uri bmpUri = Uri.parse(pathofBmp);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-        //sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-        //sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-        sendIntent.setType("image/*");
-        startActivity(sendIntent);
+        if (isStoragePermissionGranted()) {
+            final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("image/jpeg");
+            String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), resultBitmap, "titre", null);
+            Uri bmpUri = Uri.parse(pathofBmp);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+            startActivity(Intent.createChooser(shareIntent, "Partager l'image avec"));
+        }
     }
 }
