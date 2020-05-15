@@ -62,13 +62,13 @@ public class configureImage extends AppCompatActivity {
 
     public void openGallery(View view){
 
-        if (ContextCompat.checkSelfPermission(configureImage.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+       /* if (ContextCompat.checkSelfPermission(configureImage.this, Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(configureImage.this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     0);
 
-        }
+        }*/
 
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery,PICK_IMAGE);

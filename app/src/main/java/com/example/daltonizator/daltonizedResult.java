@@ -5,6 +5,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,20 +17,30 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Method;
+import java.util.Random;
 
 public class daltonizedResult extends AppCompatActivity {
 
     ImageView result;
+    Bitmap resultBitmap;
+    String typeDeDaltonisme;
+    Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,14 +48,11 @@ public class daltonizedResult extends AppCompatActivity {
         setContentView(R.layout.activity_daltonized_result);
 
 
-        Uri imageUri;
-        String typeDeDaltonisme;
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
             imageUri = Uri.parse(bundle.getString("imageUri"));
             typeDeDaltonisme = bundle.getString("valeurSpinner");
         }else{return;}
-
         result = findViewById(R.id.imageDalt);
         ImageView originale = findViewById(R.id.imageOriginale);
         originale.setImageURI(imageUri);
@@ -134,22 +145,6 @@ public class daltonizedResult extends AppCompatActivity {
 
     public void convertImage(Uri imageUri, String typeDeDaltonisme) throws IOException {
 
-        /*
-        if (ContextCompat.checkSelfPermission(daltonizedResult.this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(daltonizedResult.this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    0);//MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-        }
-        if (ContextCompat.checkSelfPermission(daltonizedResult.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(daltonizedResult.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                    0);//MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-
-        }*/
-
         Bitmap sourceBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
 
@@ -169,19 +164,68 @@ public class daltonizedResult extends AppCompatActivity {
         display.getSize(size);
 
 
-        Bitmap resultBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(),
+        resultBitmap = Bitmap.createBitmap(sourceBitmap.getWidth(),
                 sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(resultBitmap);
         canvas.drawBitmap(sourceBitmap, 0, 0, paint);
 
         result.setImageBitmap(resultBitmap);
-        try (FileOutputStream out = new FileOutputStream("/storage/emulated/0/testDaltonizator/image"+typeDeDaltonisme+".png")) {
-            resultBitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
-        } catch (IOException e) {
+    }
+
+    public void enregistrerImage(View view){
+        if(isStoragePermissionGranted()){
+            SaveImage(resultBitmap);
+        }
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    private void SaveImage(Bitmap finalBitmap) {
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/Daltonizator");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +"-"+typeDeDaltonisme+"-"+ ".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            MediaScannerConnection.scanFile(this, new String[] { file.getPath() }, new String[] { "image/jpeg" }, null);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return;
+    }
+
+    public void share(View view){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        String pathofBmp = MediaStore.Images.Media.insertImage(getContentResolver(), resultBitmap,"title", null);
+        Uri bmpUri = Uri.parse(pathofBmp);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+        //sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        //sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+        sendIntent.setType("image/*");
+        startActivity(sendIntent);
     }
 }
