@@ -115,12 +115,18 @@ public class configureImage extends AppCompatActivity {
         if(resultCode == RESULT_OK && requestCode==PICK_IMAGE){
             if(data.getData()==null) return;
 
-            Bitmap image = BitmapFactory.decodeFile(photoPath);
-            imageView.setImageBitmap(image);
             buttonSuivant.setAlpha(1f);
             buttonSuivant.setClickable(true);
             imageUri = data.getData();
             imageView.setImageURI(imageUri);
+        }
+        else if (resultCode == RESULT_OK && requestCode==RETURN_TAKE_PICTURE) {
+            Bitmap image = BitmapFactory.decodeFile(photoPath);
+            imageView.setImageBitmap(image);
+            buttonSuivant.setAlpha(1f);
+            buttonSuivant.setClickable(true);
+
+            imageUri = Uri.parse(photoPath);
         }
     }
 }
