@@ -121,12 +121,12 @@ public class configureImage extends AppCompatActivity {
             imageView.setImageURI(imageUri);
         }
         else if (resultCode == RESULT_OK && requestCode==RETURN_TAKE_PICTURE) {
-            Bitmap image = BitmapFactory.decodeFile(photoPath);
-            imageView.setImageBitmap(image);
+           // Bitmap image = BitmapFactory.decodeFile(photoPath);
+           //ImageView.setImageBitmap(image);
             buttonSuivant.setAlpha(1f);
             buttonSuivant.setClickable(true);
-
             imageUri = Uri.parse(photoPath);
+            imageView.setImageURI(imageUri);
         }
     }
 }
