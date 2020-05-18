@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+//Cette activity permet de choisir le type de daltonisme avec un menu déroulant, et une image qui permet de visualiser très rapidement l'effet que cela à sur la vision.
 public class choisirTypeDaltonisme extends AppCompatActivity {
 
     Uri imageUri;
@@ -21,11 +22,12 @@ public class choisirTypeDaltonisme extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choisir_type_daltonisme);
 
+        //L'objet spinner est le menu déroulant
         spinner = findViewById(R.id.dropdownTypeDaltonisme);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                changeHUE();
+                changeHUE();        //Lorsqu'on change de type de daltonisme, cela appel la fonction changeHUE.
             }
 
             @Override
@@ -46,6 +48,7 @@ public class choisirTypeDaltonisme extends AppCompatActivity {
         finish();
     }
 
+    //La fonction appelée lors de l'appuie du bouton daltonizer. Cela emmène à l'activity daltonizedResult.
     public void daltonizer(View view){
         Intent intent = new Intent(this,daltonizedResult.class);
 
@@ -55,6 +58,7 @@ public class choisirTypeDaltonisme extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Cette fonction charge la bonne version de l'HUE correspondant au type de daltonisme.
     private void changeHUE(){
         String typeDeDaltonisme = spinner.getSelectedItem().toString();
         switch (typeDeDaltonisme){

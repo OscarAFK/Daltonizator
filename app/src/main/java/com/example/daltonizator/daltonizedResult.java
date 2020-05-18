@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Random;
 
+//Cette activity permet de comparer l'image original et celle daltonizée. On peut aussi enregistrer l'image ou la partager.
 public class daltonizedResult extends AppCompatActivity {
 
     ImageView result;
@@ -57,19 +58,20 @@ public class daltonizedResult extends AppCompatActivity {
         result = findViewById(R.id.imageDalt);
         ImageView originale = findViewById(R.id.imageOriginale);
         originale.setImageURI(imageUri);
-        Log.v("test",imageUri.toString());
+
+        //On convertit l'image a l'arrivé dans l'activity.
         try {
             convertImage(imageUri,typeDeDaltonisme);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.v("test","2");
     }
 
     public void closeActivity(View view){
         finish();
     }
 
+    //Cette fonction renvoie la matrice de couleur pour la conversion suivant le type de daltonisme
     private float[] colorTransform(String typeDeDaltonisme){
         switch (typeDeDaltonisme){
             case "Pas de daltonisme":
@@ -145,18 +147,16 @@ public class daltonizedResult extends AppCompatActivity {
         }
     }
 
+    //Cette fonction convertit l'image original en image daltonizée.
     public void convertImage(Uri imageUri, String typeDeDaltonisme) throws IOException {
 
         Bitmap sourceBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-
-        Log.v("test","1");
         float[] colorTransform = colorTransform(typeDeDaltonisme);
 
-
         ColorMatrix colorMatrix = new ColorMatrix();
-        colorMatrix.setSaturation(0f); //Remove Colour
-        colorMatrix.set(colorTransform); //Apply the Red
+        colorMatrix.setSaturation(0f);
+        colorMatrix.set(colorTransform);
 
         ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(colorMatrix);
         Paint paint = new Paint();
@@ -171,17 +171,20 @@ public class daltonizedResult extends AppCompatActivity {
                 sourceBitmap.getHeight(), Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(resultBitmap);
+
         canvas.drawBitmap(sourceBitmap, 0, 0, paint);
 
         result.setImageBitmap(resultBitmap);
     }
 
+    //la fonction appelée lors de l'appuie du bouton "enregistrer"
     public void enregistrerImage(View view){
-        if(isStoragePermissionGranted()){
-            SaveImage(resultBitmap);
+        if(isStoragePermissionGranted()){       //On test demande d'abord les permissions à l'utilisateur
+            SaveImage(resultBitmap);        //On appel la fonction qui sauvegarde effectivement l'image.
         }
     }
 
+    //Permet de demander à l'utilisateur des permission pour écrire dans la mémoire. Renvoie la réponse de l'utilisateur.
     public  boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -197,14 +200,17 @@ public class daltonizedResult extends AppCompatActivity {
         }
     }
 
+    //Cette fonction permet de sauvegarder le fichier
     private void SaveImage(Bitmap finalBitmap) {
-
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/Daltonizator");
+        String root = Environment.getExternalStorageDirectory().toString();     //Permet de déterminer le chemin de dossier de stockage
+        File myDir = new File(root + "/Daltonizator");      //On se place dans un sous-dossier propre à l'application
         myDir.mkdirs();
+
+        //On génère un nombre aléatoire pour le nom du fichier.
         Random generator = new Random();
         int n = 10000;
         n = generator.nextInt(n);
+
         String fname = "Image-"+ n +"-"+typeDeDaltonisme+"-"+ ".jpg";
         File file = new File (myDir, fname);
         if (file.exists ()) file.delete ();
@@ -213,13 +219,15 @@ public class daltonizedResult extends AppCompatActivity {
             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-            MediaScannerConnection.scanFile(this, new String[] { file.getPath() }, new String[] { "image/jpeg" }, null);
+
+            MediaScannerConnection.scanFile(this, new String[] { file.getPath() }, new String[] { "image/jpeg" }, null); //Cela permet d'ajouter directement l'image à la galerie.
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    //Fonction appelée lors de l'appuie du bouton "partager"
     public void share(View view){
         if (isStoragePermissionGranted()) {
             final Intent shareIntent = new Intent(Intent.ACTION_SEND);

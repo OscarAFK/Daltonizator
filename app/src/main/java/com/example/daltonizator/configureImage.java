@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,12 +20,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//Cette activity permet de choisir l'image qu'on va daltonizer. On peut la choisir dans un dossier ou prendre une photo.
 public class configureImage extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 100;
@@ -42,9 +45,11 @@ public class configureImage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure_image);
 
+        //Ces trois lignes permettent de mettre le bouton "suivant" en grisé
         buttonSuivant = findViewById(R.id.buttonSuivant);
         buttonSuivant.setAlpha(.5f);
         buttonSuivant.setClickable(false);
+
         buttonPrendrePhoto = findViewById(R.id.btnTakePicture);
         imageView = findViewById(R.id.imageSelect);
         imageView.setImageResource(android.R.color.transparent);
@@ -54,6 +59,7 @@ public class configureImage extends AppCompatActivity {
         finish();
     }
 
+    //La fonction appelée lors de l'appuie du bouton suivant, et qui emmène à l'activity choisirTypeDaltonisme.
     public void chooseDaltonism(View view){
         Intent intent = new Intent(this,choisirTypeDaltonisme.class);
 
@@ -62,13 +68,13 @@ public class configureImage extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //La fonction appelée lors de l'appuie du bouton "Choisir une image dans un dossier"
     public void openGallery(View view){
         Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         startActivityForResult(gallery,PICK_IMAGE);
     }
 
-    // accès à l'appareil photo + mémorisation dans un fichier temporaire
-
+    //La fonction appelée lors de l'appuie du bouton "Prendre une photo"
     public void takePicture(View view) {
         // créer un intent pour ouvrir une fenêtre pour prendre la photo
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -122,6 +128,7 @@ public class configureImage extends AppCompatActivity {
         }
     }
 
+    //Cette fonction permet de transformer une image de type bitmap en Uri. C'est utile pour transférer les image d'une activity à l'autre
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);

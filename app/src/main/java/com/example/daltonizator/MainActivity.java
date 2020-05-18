@@ -23,16 +23,13 @@ import android.widget.Button;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+//Cette activity est l'écran de présentation de l'application
 public class MainActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //convertImage();
     }
 
     public void QuitApp(View view) {
