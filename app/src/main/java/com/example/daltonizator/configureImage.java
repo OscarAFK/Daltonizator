@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -74,37 +75,53 @@ public class configureImage extends AppCompatActivity {
         startActivityForResult(gallery,PICK_IMAGE);
     }
 
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
     //La fonction appelée lors de l'appuie du bouton "Prendre une photo"
     public void takePicture(View view) {
-        // créer un intent pour ouvrir une fenêtre pour prendre la photo
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // test pour voir si l'intent peut être géré
-        if(intent.resolveActivity(getPackageManager()) != null) {
-            // création d'un nom de fichier (pour le tmp)
-            String tmp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(isStoragePermissionGranted()) {
+            // créer un intent pour ouvrir une fenêtre pour prendre la photo
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // test pour voir si l'intent peut être géré
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                // création d'un nom de fichier (pour le tmp)
+                String tmp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                File photoDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-            try {
-                File photoFile = File.createTempFile("photo"+tmp, ".png", photoDir);
+                try {
+                    File photoFile = File.createTempFile("photo" + tmp, ".png", photoDir);
 
-                // enregistrer le chemin complet de l'image
-                photoPath = photoFile.getAbsolutePath();
+                    // enregistrer le chemin complet de l'image
+                    photoPath = photoFile.getAbsolutePath();
 
-                // création de l'URI
-                Uri photoUri = FileProvider.getUriForFile(configureImage.this,
-                        configureImage.this.getApplicationContext().getPackageName()+".provider",
-                        photoFile);
+                    // création de l'URI
+                    Uri photoUri = FileProvider.getUriForFile(configureImage.this,
+                            configureImage.this.getApplicationContext().getPackageName() + ".provider",
+                            photoFile);
 
-                // transfert URI vers l'intent pour enregistrer la photo dans le fichier temporaire
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                    // transfert URI vers l'intent pour enregistrer la photo dans le fichier temporaire
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 
-                // ouverture de l'activité par rapport à l'intent
-                startActivityForResult(intent, RETURN_TAKE_PICTURE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } // fin takePicture()
-
+                    // ouverture de l'activité par rapport à l'intent
+                    startActivityForResult(intent, RETURN_TAKE_PICTURE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } // fin takePicture()
+        }
     }
 
     @Override
