@@ -5,7 +5,7 @@
     <string name="buttonQuitter">Quitter</string>
     <string name="contentDescriptionImagePresentation">Image de présentation</string>
 
-    <string name="textAPropos">Cette application a pour but de permettre aux non-daltoniens de se faire une idée de la vision de différent type de daltonien.\n\nApplication réalisée par Oscar Trosseau et Lucas Brand dans le cadre du cours de Conception d\'Application Interactive de l\'ENIB.\n\nMails:\n\t-o6trosse@enib.fr\n\t-l6brand@enib.fr\n\n\nRessources:\nImage d\'acceuil: Photo by and (c)2008 Derek Ramsey (Ram-Man).  Co-attribution must be given to the Chanticleer Garden. / CC BY-SA (http://creativecommons.org/licenses/by-sa/3.0/).</string>
+    <string name="textAPropos">Cette application a pour but de permettre aux non-daltoniens de se faire une idée de la vision des différents types de daltonisme.\n\nApplication réalisée par Oscar Trosseau et Lucas Brand dans le cadre du cours de Conception d\'Application Interactive de l\'ENIB.\n\nMails:\n\t-o6trosse@enib.fr\n\t-l6brand@enib.fr\n\n\nRessources:\nImage d\'acceuil: Photo by and (c)2008 Derek Ramsey (Ram-Man).  Co-attribution must be given to the Chanticleer Garden. / CC BY-SA (http://creativecommons.org/licenses/by-sa/3.0/).</string>
 
     <string name="buttonRetour">Retour</string>
     <string name="instructions">Instructions:\n\t-1: Choisissez une image, ou prenez une photo, et appuyez sur "Suivant"\n\t-2: Choisissez le type de daltonisme et appuyez sur "Daltonizer"\n\t-3: Observez le résultat, conservez le ou partagez le!</string>
