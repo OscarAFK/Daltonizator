@@ -4,14 +4,21 @@
     <string name="buttonApropos">A propos</string>
     <string name="buttonQuitter">Quitter</string>
     <string name="contentDescriptionImagePresentation">Image de présentation</string>
-    <string name="textAPropos">Je met du texte ici histoire de montrer qu\'on a prévus le coup mais il faudrait le changer. Je pensais mettre des sources, du copyright, nos noms et ptetre un petit tutoriel sur comment faire fonctionner l\'app.</string>
+
+    <string name="textAPropos">Cette application a pour but de permettre aux non-daltoniens de se faire une idée de la vision des différents types de daltonisme.\n\nApplication réalisée par Oscar Trosseau et Lucas Brand dans le cadre du cours de Conception d\'Application Interactive de l\'ENIB.\n\nMails:\n\t-o6trosse@enib.fr\n\t-l6brand@enib.fr\n\n\nRessources:\nImage d\'acceuil: Photo by and (c)2008 Derek Ramsey (Ram-Man).  Co-attribution must be given to the Chanticleer Garden. / CC BY-SA (http://creativecommons.org/licenses/by-sa/3.0/).</string>
+
     <string name="buttonRetour">Retour</string>
-    <string name="instructions">Instructions:\n\t-1: Choisissez une image, ou prenez une photo\n\t-2: Choisissez le type de daltonisme\n\t-3:Appuyez sur le bouton Daltonizer pour voir le résultat</string>
+    <string name="instructions">Instructions:\n\t-1: Choisissez une image, ou prenez une photo, et appuyez sur "Suivant"\n\t-2: Choisissez le type de daltonisme et appuyez sur "Daltonizer"\n\t-3: Observez le résultat, conservez le ou partagez le!</string>
     <string name="image">Image:</string>
     <string name="choisirDsDossier">Choisir une image dans un dossier</string>
     <string name="prendrePhoto">Prendre une photo</string>
     <string name="choixDaltonisme">Type de daltonisme:</string>
+    <string name="daltonizer">Daltonizer</string>
+    <string name="suivant">Suivant</string>
+    <string name="contentDescriptionHUE">HUE</string>
+    <string name="imageChoisie">Image choisie par l\'utilisateur</string>
     <string-array name="dropdownTypeDeDaltonisme">
+        <item name="pasDeDaltonisme">Pas de daltonisme</item>
         <item name="deuteranomalie">Deutéranomalie</item>
         <item name="deuteranopie">Deutéranopie</item>
         <item name="protanomalie">Protanomalie</item>
@@ -19,6 +26,10 @@
         <item name="trianomalie">Trianomalie</item>
         <item name="trianopie">Trianopie</item>
         <item name="achromatopsie">Achromatopsie</item>
+        <item name="achromatomalie">Achromatomalie</item>
     </string-array>
-    <string name="daltonizer">Daltonizer</string>
+    <string name="originale">Version originale:</string>
+    <string name="enregistrer">Enregistrer</string>
+    <string name="partager">Partager</string>
+    <string name="versionDalt">Version daltonizée:</string>
 </resources>

@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".configureImage"></activity>
+        <activity android:name=".daltonizedResult"></activity>
+        <activity android:name=".choisirTypeDaltonisme" />
+        <activity android:name=".configureImage" />
         <activity android:name=".APropos" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -18,11 +20,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
 
+    </application>
+    <!--
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />         //Permission implicitement accordée avec WRITE_EXTERNAL_STORAGE
+    -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
 </manifest>
